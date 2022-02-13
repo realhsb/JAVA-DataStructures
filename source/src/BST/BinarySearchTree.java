@@ -15,7 +15,7 @@ public class BinarySearchTree implements IndexInterface<TreeNode> {
 		if(tNode == null)
 			return null;	//검색 실패 
 		else if(searchKey.compareTo(tNode.key) == 0)
-			retrun searchItem(tNode.left, searchKey);
+			return searchItem(tNode.left, searchKey);
 		else
 			return searchItem(tNode.right, searchKey);
 	}
@@ -39,7 +39,7 @@ public class BinarySearchTree implements IndexInterface<TreeNode> {
 	
 	//[알고리즘 10-4] : 삭제  
 	@Override
-	public void delete(Comparable newKey) {
+	public void delete(Comparable searchKey) {
 		root = deleteItem(root, searchKey);
 	}
 	
@@ -74,18 +74,35 @@ public class BinarySearchTree implements IndexInterface<TreeNode> {
 		}
 	}
 	
+	private returnPair deleteMinItem(TreeNode tNode) {
+		if(tNode.left == null) {
+			return new returnPair(tNode.key, tNode.right);
+		}else {
+			returnPair rPair = deleteMinItem(tNode.right);
+			tNode.left = rPair.node;
+			rPair.node = tNode;
+			return rPair;
+		}
+	}
+	
+	private class returnPair{
+		private Comparable key;
+		private TreeNode node;
+		private returnPair(Comparable it, TreeNode nd) {
+			key = it;
+			node = nd;
+		}
+	}
+	
 	// 기타 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return root == null;
 	}
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		root = null;
 	}
-	
-	
+
 }
